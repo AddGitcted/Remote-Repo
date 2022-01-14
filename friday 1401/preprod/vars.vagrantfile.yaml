@@ -1,0 +1,30 @@
+servers:
+  - name: VM-HAPROXY
+    type: haproxy
+    box: ./packer_debian10-10G-vm-swarm-master-01_virtualbox.box
+    eth1: 192.168.30.11
+    mem: '1024'
+    cpu: '1'
+  - name: VM-MASTER1-DCK
+    type: swarm
+    box: ./packer_debian10-10G-vm-swarm-master-01_virtualbox.box
+    eth1: 192.168.30.13
+    mem: '1024'
+    cpu: '1'
+  - name: VM-WORKER1-DCK
+    type: swarm
+    box: ./packer_debian10-10G-vm-swarm-master-01_virtualbox.box
+    eth1: 192.168.30.27
+    mem: '1024'
+    cpu: '1'
+
+MANAGERS: 1
+WORKERS: 1
+ANSIBLE_GROUPS:
+  managers:
+    - VM-MASTER1-DCK
+  workers:
+    - VM-WORKER1-DCK
+  'all_groups:children':
+    - managers
+    - workers
