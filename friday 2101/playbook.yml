@@ -1,0 +1,35 @@
+---
+  # Nginx
+  - name: Install NginX
+    hosts: all
+    roles:
+      - role: nginx
+    tasks:
+      - name: ensure nginx is at the latest version
+        apt: name=nginx state=latest
+      - name: start nginx
+        service:
+            name: nginx
+            state: started
+
+
+  # Php
+  - name: Install PHP
+    hosts: all
+    roles: php-fpm
+    vars:
+      php_version: 7.2
+      php_modules:
+        - mysql 
+    tasks:
+    - name: install packages
+      apt: name={{ item }} update_cache=yes state=latest
+      with_items:
+        - php-cli
+        - php-curl
+        - php-fpm
+        - php-intl
+        - php-json
+        - php-mcrypt
+        - php-sqlite
+        - sqlite3
